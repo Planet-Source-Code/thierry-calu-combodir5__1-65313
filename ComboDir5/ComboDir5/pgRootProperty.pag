@@ -1,0 +1,86 @@
+VERSION 5.00
+Begin VB.PropertyPage pgRootProperty 
+   Caption         =   "ppg"
+   ClientHeight    =   3600
+   ClientLeft      =   0
+   ClientTop       =   0
+   ClientWidth     =   4800
+   PaletteMode     =   0  'Halftone
+   ScaleHeight     =   3600
+   ScaleWidth      =   4800
+   Begin VB.Timer Timer1 
+      Interval        =   1
+      Left            =   1800
+      Top             =   1560
+   End
+End
+Attribute VB_Name = "pgRootProperty"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = True
+'-------------------------------------------
+'Klaus H. Probst [kprobst@vbbox.com]
+'   http://www.vbbox.com/
+'
+'How To Add a Custom Font Property to a User Control
+'   http://support.microsoft.com/default.aspx?scid=kb;en-us;197127
+'-------------------------------------------
+Option Explicit
+
+
+Private m_PropertyPageHwnd As Long
+Private m_RootFolder As String
+Private m_ReturnFolder As String
+
+Private Declare Function GetParent Lib "user32" (ByVal hWnd As Long) As Long
+
+Private Const WM_CLOSE = &H10
+Private Declare Function PostMessage Lib "user32.dll" Alias "PostMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
+
+Private Const HWND_TOP = 0
+Private Const SWP_NOSIZE = &H1
+Private Const SWP_HIDEWINDOW = &H80
+Private Declare Function SetWindowPos Lib "user32.dll" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal X As Long, ByVal Y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
+
+
+
+
+Private Sub PropertyPage_Paint()
+
+
+    m_PropertyPageHwnd = GetParent(GetParent(PropertyPage.hWnd))
+
+
+    Call SetWindowPos(m_PropertyPageHwnd, HWND_TOP, 200&, 200&, &O0, &O0, SWP_HIDEWINDOW Or SWP_NOSIZE)
+
+'    Call PostMessage(m_PropertyPageHwnd, WM_CLOSE, 0, 0)    ' Close the dialog box.
+
+End Sub
+
+Private Sub PropertyPage_Terminate()
+    If Len(m_ReturnFolder) > 0 Then
+        SelectedControls(0).RootFolder = m_ReturnFolder
+    End If
+End Sub
+
+Private Sub Timer1_Timer()
+    
+    Timer1.Enabled = False     ' You will not need the Timer again.
+    m_ReturnFolder = mPropertyPage.BrowseFolderForPropertyPage(PropertyPage.hWnd, "Root folder", _
+                                                                   "Please select a folder for the RootFolder property :", _
+                                                                   "", m_RootFolder)
+    Call PostMessage(m_PropertyPageHwnd, WM_CLOSE, 0, 0)    ' Close the dialog box.
+End Sub
+
+
+
+Private Sub PropertyPage_SelectionChanged()
+
+    m_RootFolder = SelectedControls(0).RootFolder
+    
+
+End Sub
+
+
+
