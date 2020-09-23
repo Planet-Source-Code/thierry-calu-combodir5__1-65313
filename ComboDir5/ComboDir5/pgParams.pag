@@ -1,0 +1,359 @@
+VERSION 5.00
+Begin VB.PropertyPage ppgParams 
+   Caption         =   "Params"
+   ClientHeight    =   4500
+   ClientLeft      =   0
+   ClientTop       =   0
+   ClientWidth     =   9570
+   PaletteMode     =   0  'Halftone
+   ScaleHeight     =   4500
+   ScaleWidth      =   9570
+   Begin VB.Frame fraResolvedFolders 
+      Caption         =   "Resolved &Folders :"
+      Height          =   1215
+      Left            =   3000
+      TabIndex        =   15
+      Top             =   3120
+      Width           =   6375
+      Begin VB.CheckBox chkResolveCSIDL 
+         Caption         =   "Resolve CSIDL"
+         Height          =   255
+         Left            =   120
+         TabIndex        =   18
+         Top             =   240
+         Width           =   2300
+      End
+      Begin VB.CheckBox chkResolveNetworkDrive 
+         Caption         =   "Resolve Network Drive"
+         Height          =   255
+         Left            =   120
+         TabIndex        =   17
+         Top             =   540
+         Width           =   2300
+      End
+      Begin VB.CheckBox chkResolveSharedFolder 
+         Caption         =   "Resolve Shared Folder"
+         Height          =   255
+         Left            =   120
+         TabIndex        =   16
+         Top             =   840
+         Width           =   2300
+      End
+      Begin VB.Label lblResolvedFolders 
+         Height          =   855
+         Left            =   2520
+         TabIndex        =   19
+         Top             =   240
+         Width           =   3615
+      End
+   End
+   Begin VB.Frame fraRootFolder 
+      Caption         =   "&Root folder"
+      Height          =   1355
+      Left            =   120
+      TabIndex        =   8
+      Top             =   120
+      Width           =   9255
+      Begin VB.TextBox txtRootFolder 
+         Height          =   315
+         Left            =   120
+         Locked          =   -1  'True
+         TabIndex        =   12
+         ToolTipText     =   "Local Root folder"
+         Top             =   360
+         Width           =   8535
+      End
+      Begin VB.CommandButton cmdBrowseForRootFolder 
+         Caption         =   "..."
+         Height          =   315
+         Left            =   8760
+         TabIndex        =   11
+         Top             =   360
+         Width           =   375
+      End
+      Begin VB.CheckBox chkRootNodeHighLight 
+         Caption         =   "Node is HighLight"
+         Height          =   255
+         Left            =   2520
+         TabIndex        =   10
+         Top             =   1000
+         Width           =   2175
+      End
+      Begin VB.CheckBox chkRootNodeBold 
+         Caption         =   "Node is Bold"
+         Height          =   255
+         Left            =   120
+         TabIndex        =   9
+         Top             =   1000
+         Width           =   2175
+      End
+      Begin VB.Label lblInvariantRootFolder 
+         BorderStyle     =   1  'Fixed Single
+         Height          =   255
+         Left            =   120
+         TabIndex        =   13
+         ToolTipText     =   "Invariant Root folder"
+         Top             =   720
+         Width           =   9015
+      End
+   End
+   Begin VB.Frame fraStartingFolder 
+      Caption         =   "&Starting folder"
+      Height          =   1355
+      Left            =   120
+      TabIndex        =   2
+      Top             =   1680
+      Width           =   9255
+      Begin VB.TextBox txtStartingFolder 
+         Height          =   315
+         Left            =   120
+         Locked          =   -1  'True
+         TabIndex        =   4
+         ToolTipText     =   "Local Starting folder"
+         Top             =   360
+         Width           =   8535
+      End
+      Begin VB.CommandButton cmdBrowseForStartingFolder 
+         Caption         =   "..."
+         Height          =   315
+         Left            =   8760
+         TabIndex        =   3
+         Top             =   360
+         Width           =   375
+      End
+      Begin VB.CheckBox chkStartingNodeBold 
+         Caption         =   "Node is Bold"
+         Height          =   255
+         Left            =   120
+         TabIndex        =   6
+         Top             =   1005
+         Width           =   2175
+      End
+      Begin VB.CheckBox chkStartingNodeHighLight 
+         Caption         =   "Node is HighLight"
+         Height          =   255
+         Left            =   2520
+         TabIndex        =   7
+         Top             =   1005
+         Width           =   2175
+      End
+      Begin VB.Label lblInvariantStartingFolder 
+         BorderStyle     =   1  'Fixed Single
+         Height          =   255
+         Left            =   120
+         TabIndex        =   5
+         ToolTipText     =   "Invariant Starting folder"
+         Top             =   720
+         Width           =   9015
+      End
+   End
+   Begin VB.ComboBox cmbXPTheme 
+      Height          =   315
+      ItemData        =   "pgParams.pgx":0000
+      Left            =   240
+      List            =   "pgParams.pgx":000D
+      Style           =   2  'Dropdown List
+      TabIndex        =   1
+      Top             =   3480
+      Width           =   2175
+   End
+   Begin VB.Label lblXPTheme 
+      Caption         =   "&XPTheme :"
+      Height          =   375
+      Left            =   240
+      TabIndex        =   14
+      Top             =   3240
+      Width           =   1815
+   End
+   Begin VB.Label lbl 
+      AutoSize        =   -1  'True
+      Caption         =   "&XPTheme"
+      Height          =   195
+      Index           =   2
+      Left            =   240
+      TabIndex        =   0
+      Top             =   3480
+      Width           =   705
+   End
+End
+Attribute VB_Name = "ppgParams"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = True
+Option Explicit
+Private m_PointerToUC As Long
+Private m_ResolveCSIDLOld As Boolean
+Private m_ResolveNetworkDriveOld As Boolean
+Private m_ResolveSharedFolderOld As Boolean
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (pDest As Any, pSource As Any, ByVal ByteLen As Long)
+
+Private Sub Check1_Click()
+
+End Sub
+
+Private Sub chkResolveCSIDL_Click()
+    PropertyPage.Changed = True
+End Sub
+
+Private Sub chkResolveNetworkDrive_Click()
+    PropertyPage.Changed = True
+End Sub
+
+Private Sub chkResolveSharedFolder_Click()
+    PropertyPage.Changed = True
+End Sub
+
+Private Sub chkRootNodeBold_Click()
+    PropertyPage.Changed = True
+End Sub
+
+Private Sub chkRootNodeHighLight_Click()
+    PropertyPage.Changed = True
+End Sub
+
+Private Sub chkStartingNodeBold_Click()
+    PropertyPage.Changed = True
+End Sub
+
+Private Sub chkStartingNodeHighLight_Click()
+    PropertyPage.Changed = True
+End Sub
+
+Private Sub cmbXPTheme_Click()
+    PropertyPage.Changed = True
+End Sub
+
+Private Sub cmdBrowseForRootFolder_Click()
+    Dim lstrRootFolder As String
+
+    
+    lstrRootFolder = mPropertyPage.BrowseFolderForPropertyPage(PropertyPage.hWnd, "Root folder", _
+                                                                   "Please select a folder for the RootFolder property :", _
+                                                                   "", txtRootFolder.Text)
+    
+    If Len(lstrRootFolder) > 0 Then
+        txtRootFolder.Text = lstrRootFolder
+        lblInvariantRootFolder.Caption = GetUCWithPointer.LocalPathToInvariantPath(lstrRootFolder)
+        If InStr(UCase$(txtStartingFolder.Text), UCase$(txtRootFolder.Text)) = 0 Then
+            txtStartingFolder.Text = ""
+            lblInvariantStartingFolder.Caption = ""
+        End If
+    End If
+
+End Sub
+
+Private Sub cmdBrowseForStartingFolder_Click()
+    Dim lstrStartingFolder As String
+    Dim lstrRootFolder As String
+
+    
+    lstrRootFolder = txtRootFolder.Text
+    lstrStartingFolder = mPropertyPage.BrowseFolderForPropertyPage(PropertyPage.hWnd, "Starting Folder", _
+                                                                   "Please select a folder for the StartingFolder property :", _
+                                                                   lstrRootFolder, txtStartingFolder.Text)
+    If Len(lstrStartingFolder) > 0 Then
+        txtStartingFolder.Text = lstrStartingFolder
+        lblInvariantStartingFolder.Caption = GetUCWithPointer.LocalPathToInvariantPath(lstrStartingFolder)
+    End If
+
+    
+
+End Sub
+
+Private Sub PropertyPage_ApplyChanges()
+    Dim uc As ucComboDir5
+    
+    Set uc = SelectedControls(0)
+    
+    uc.RootFolder = txtRootFolder.Text
+    uc.RootNodeBold = (chkRootNodeBold.Value = vbChecked)
+    uc.RootNodeHighLight = (chkRootNodeHighLight.Value = vbChecked)
+    
+    uc.StartingFolder = txtStartingFolder.Text
+    uc.StartingNodeBold = (chkStartingNodeBold.Value = vbChecked)
+    uc.StartingNodeHighLight = (chkStartingNodeHighLight.Value = vbChecked)
+    
+    uc.XpTheme = cmbXPTheme.ListIndex
+    uc.ResolveCSIDL = (chkResolveCSIDL.Value = vbChecked)
+    uc.ResolveSharedFolder = (chkResolveSharedFolder.Value = vbChecked)
+    uc.ResolveNetworkDrive = (chkResolveNetworkDrive.Value = vbChecked)
+    
+    PropertyPage.Changed = False
+    
+End Sub
+
+Private Sub PropertyPage_SelectionChanged()
+    Dim uc As ucComboDir5
+
+    Set uc = SelectedControls(0)
+
+    txtRootFolder.Text = uc.RootFolder
+    lblInvariantRootFolder.Caption = uc.LocalPathToInvariantPath(txtRootFolder.Text)
+    chkRootNodeBold.Value = Abs(uc.RootNodeBold)
+    chkRootNodeHighLight.Value = Abs(uc.RootNodeHighLight)
+    
+    txtStartingFolder.Text = uc.StartingFolder
+    lblInvariantStartingFolder.Caption = uc.LocalPathToInvariantPath(txtStartingFolder.Text)
+    chkStartingNodeBold.Value = Abs(uc.StartingNodeBold)
+    chkStartingNodeHighLight.Value = Abs(uc.StartingNodeHighLight)
+    
+    cmbXPTheme.ListIndex = uc.XpTheme
+    
+    chkResolveCSIDL.Value = Abs(uc.ResolveCSIDL)
+    m_ResolveCSIDLOld = uc.ResolveCSIDL
+    
+    chkResolveSharedFolder.Value = Abs(uc.ResolveSharedFolder)
+    m_ResolveSharedFolderOld = uc.ResolveSharedFolder
+    
+    chkResolveNetworkDrive.Value = Abs(uc.ResolveNetworkDrive)
+    m_ResolveNetworkDriveOld = uc.ResolveNetworkDrive
+    
+    m_PointerToUC = ObjPtr(uc)
+
+    PropertyPage.Changed = False
+
+End Sub
+
+Private Sub txtRootFolder_Change()
+    PropertyPage.Changed = True
+End Sub
+
+Private Sub txtRootFolder_KeyPress(KeyAscii As Integer)
+    If KeyAscii = vbKeyBack Then
+        txtRootFolder.Text = ""
+        lblInvariantRootFolder.Caption = ""
+        txtStartingFolder.Text = ""
+        lblInvariantStartingFolder.Caption = ""
+    End If
+End Sub
+
+Private Sub txtStartingFolder_Change()
+    PropertyPage.Changed = True
+End Sub
+
+'------------------------------------------------------------------------------
+'GetFormWithPointer
+'Description:
+'Retourne une feuille (ou Nothing) a partir d'un pointeur
+'------------------------------------------------------------------------------
+Public Function GetUCWithPointer() As ucComboDir5
+    Dim lobjUC As ucComboDir5
+
+    On Error Resume Next
+
+    If m_PointerToUC <> 0 Then
+        CopyMemory lobjUC, m_PointerToUC, 4
+        'Il est possible que cette form n'existe...
+        Set GetUCWithPointer = lobjUC
+        CopyMemory lobjUC, 0&, 4
+    End If
+
+End Function
+
+Private Sub txtStartingFolder_KeyPress(KeyAscii As Integer)
+    If KeyAscii = vbKeyBack Then
+        txtStartingFolder.Text = ""
+        lblInvariantStartingFolder.Caption = ""
+    End If
+End Sub
